@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="d-flex justify-content-between mb-3">
+    <h1>Lista de Tarefas</h1>
+    <button class="btn btn-success" routerLink="/tasks/new">Nova Tarefa</button>
+  </div>
+
+  <div class="mb-3">
+    <button class="btn btn-secondary m-1" (click)="filterTasks('all')">Todas</button>
+    <button class="btn btn-secondary m-1" (click)="filterTasks('completed')">Concluídas</button>
+    <button class="btn btn-secondary m-1" (click)="filterTasks('incomplete')">Não Concluídas</button>
+  </div>
+
+  <ul class="list-group">
+    <li *ngFor="let task of filteredTasks" class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="task-info">
+        <h5>{{ task.title }}</h5>
+        <p>{{ task.description }}</p>
+        <p class="task-date">
+          <strong>Criado em:</strong> {{ task.createdAt | taskDate }}
+        </p>
+        <p *ngIf="task.updatedAt">
+          <strong>Editado em:</strong> {{ task.updatedAt | taskDate }}
+        </p>
+        <a [routerLink]="['/tasks/edit', task.id]" class="btn btn-primary">Editar</a>
+      </div>
+
+      <div class="task-actions d-flex align-items-center">
+        <div class="form-check m-2">
+          <input type="checkbox" class="form-check-input" id="task-{{ task.id }}" [checked]="task.completed"
+            (change)="toggleComplete(task.id)">
+          <label class="form-check-label" for="task-{{ task.id }}">
+            {{ task.completed ? 'Concluído' : 'Não Concluído' }}
+          </label>
+        </div>
+        <button class="btn btn-sm btn-danger ml-3" (click)="deleteTask(task.id)">Excluir</button>
+      </div>
+    </li>
+  </ul>
+</div>
