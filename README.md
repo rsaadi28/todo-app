@@ -58,5 +58,7 @@ O uso de Observables no RxJS para interagir com os fluxos de dados da aplicaçã
 ## Criador:
 
 Rodrigo Saadi Dantas Teixeira
+
 Desenvolvedor Web
+
 Email: rsaadi28@gmail.com
