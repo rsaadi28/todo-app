@@ -1,59 +1,62 @@
-# TodoApp
+# Task Manager Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+## Descrição do Projeto
 
-## Development server
+Este projeto é uma aplicação de gerenciamento de tarefas desenvolvida com **Angular**, que permite aos usuários criar, editar, excluir e listar tarefas. A aplicação utiliza o **localStorage** para armazenar os dados localmente no navegador, oferecendo uma maneira simples de gerenciar tarefas sem a necessidade de um backend.
 
-To start a local development server, run:
+## Tecnologias Utilizadas
+
+- **Angular**: Framework para desenvolvimento de aplicações web.
+- **TypeScript**: Linguagem baseada em JavaScript com tipagem estática.
+- **RxJS**: Biblioteca para programação reativa, utilizada para lidar com fluxos de dados assíncronos.
+- **Reactive Forms**: Utilizado para construção de formulários dinâmicos e validados.
+
+## Pré-requisitos
+
+Antes de rodar o projeto, é necessário ter o **Node.js** e o **npm** instalados na sua máquina. Caso ainda não tenha, pode instalá-los [aqui](https://nodejs.org/).
+
+## Instalação e Execução
+
+### Passo 1: Clonar o repositório
+
+Clone este repositório para o seu ambiente local:
+
+```bash
+git clone https://github.com/usuario/task-manager.git
+```
+
+### Passo 2: Instalar dependências
+
+Entre no diretório do projeto e instale as dependências necessárias com o npm:
+
+```bash
+npm install
+```
+
+### Passo 3: Rodar a aplicação
+
+Depois de instalar as dependências, você pode rodar a aplicação em modo de desenvolvimento com o comando:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Decições tecnicas
 
-## Code scaffolding
+### Uso de Reactive Forms:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Usei Reactive Forms no Angular para controle sobre a validação dos campos e a manipulação dos dados do formulário. Isso torna a implementação mais escalável e fácil de testar.
 
-```bash
-ng generate component component-name
-```
+### Estrutura Modular:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+O projeto foi estruturado de forma modular, com serviços separados para gerenciar as tarefas (TaskService) e um componente específico para o formulário de tarefas (TaskFormComponent). Isso facilita a manutenção e a reutilização de código.
 
-```bash
-ng generate --help
-```
+### Uso de Observables com RxJS:
 
-## Building
+O uso de Observables no RxJS para interagir com os fluxos de dados da aplicação torna o código mais reativo e menos propenso a erros. A manipulação de dados de tarefas como streams, também deixa pronto para escalarmos caso tenhamos uma API.
 
-To build the project run:
+## Criador:
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Rodrigo Saadi Dantas Teixeira
+Desenvolvedor Web
+Email: rsaadi28@gmail.com
