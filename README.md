@@ -22,7 +22,7 @@ Antes de rodar o projeto, é necessário ter o **Node.js** e o **npm** instalado
 Clone este repositório para o seu ambiente local:
 
 ```bash
-git clone https://github.com/usuario/task-manager.git
+git clone https://github.com/rsaadi28/todo-app.git
 ```
 
 ### Passo 2: Instalar dependências
