@@ -49,7 +49,7 @@ Para executar os teste basta executar o comando:
 ng test
 ```
 
-## Decições tecnicas
+## Decisões tecnicas
 
 ### Uso de Reactive Forms:
 
