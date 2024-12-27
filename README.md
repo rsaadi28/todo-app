@@ -41,6 +41,14 @@ Depois de instalar as dependências, você pode rodar a aplicação em modo de d
 ng serve
 ```
 
+### Passo 4: Teste
+
+Para executar os teste basta executar o comando:
+
+```bash
+ng test
+```
+
 ## Decições tecnicas
 
 ### Uso de Reactive Forms:
