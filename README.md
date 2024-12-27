@@ -1,4 +1,4 @@
-# Doto-App
+# ToDo-App
 
 ## Descrição do Projeto
 
