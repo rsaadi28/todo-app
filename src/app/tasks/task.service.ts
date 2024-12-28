@@ -28,8 +28,12 @@ export class TaskService {
   }
 
   private saveTasks(tasks: Task[]) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    this.tasksSubject.next(tasks);
+    try {
+      localStorage.setItem('tasks', JSON.stringify(tasks)); // Guardo a tarefa no local storage
+      this.tasksSubject.next(tasks);
+    } catch (error) {
+      console.error('Erro ao salvar as tarefas:', error); //tratamento de erro
+    }
   }
 
   getTasks() {
@@ -37,7 +41,7 @@ export class TaskService {
   }
 
   addTask(task: Task) {
-    const tasks = [...this.tasksSubject.value, task];
+    const tasks = [...this.tasksSubject.value, task]; // incrementa a lista de tarefas com a nova tarefa
     this.saveTasks(tasks);
   }
 
