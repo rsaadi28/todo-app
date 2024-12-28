@@ -43,7 +43,7 @@ ng serve
 
 ### Passo 4: Teste
 
-Para executar os teste basta executar o comando:
+Para executar os testes basta executar o comando:
 
 ```bash
 ng test
