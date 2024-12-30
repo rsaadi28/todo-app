@@ -51,5 +51,6 @@ export class TaskListComponent implements OnInit {
 
   deleteTask(id: string) {
     this.taskService.deleteTask(id);
+    this.filterTasks(this.selectedFilter);
   }
 }
