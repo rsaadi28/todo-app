@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TaskService, Task } from '../task.service';
 
 @Component({
@@ -10,17 +12,29 @@ import { TaskService, Task } from '../task.service';
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   filteredTasks: Task[] = [];
+  selectedFilter: 'all' | 'completed' | 'incomplete' = 'all'; // Filtro ativo
 
   constructor(private taskService: TaskService) { }
 
+  private destroy$ = new Subject<void>();
+
   ngOnInit() {
-    this.taskService.tasks$.subscribe((tasks) => {
-      this.tasks = tasks;
-      this.filteredTasks = tasks;
-    });
+    this.taskService.tasks$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((tasks) => {
+        this.tasks = tasks;
+        this.filteredTasks = tasks;
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   filterTasks(status: 'all' | 'completed' | 'incomplete') {
+    this.selectedFilter = status; // Atualiza o filtro ativo
+
     if (status === 'all') {
       this.filteredTasks = this.tasks;
     } else {
@@ -32,6 +46,7 @@ export class TaskListComponent implements OnInit {
 
   toggleComplete(id: string) {
     this.taskService.toggleComplete(id);
+    this.filterTasks(this.selectedFilter);
   }
 
   deleteTask(id: string) {
