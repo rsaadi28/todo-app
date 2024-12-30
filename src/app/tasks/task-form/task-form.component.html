@@ -1,14 +1,27 @@
-<!-- task-form.component.html -->
 <div class="container mt-5">
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <!-- Campo Título -->
     <div class="form-group mb-3">
       <label for="title">Título</label>
-      <input type="text" id="title" formControlName="title" class="form-control">
+      <input type="text" id="title" formControlName="title" class="form-control"
+        [ngClass]="{ 'is-invalid': taskForm.get('title')?.touched && taskForm.get('title')?.invalid }">
+      <div *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid" class="invalid-feedback">
+        {{ titleError }}
+      </div>
     </div>
+
+    <!-- Campo Descrição -->
     <div class="form-group mb-3">
       <label for="description">Descrição</label>
-      <textarea id="description" formControlName="description" class="form-control"></textarea>
+      <textarea id="description" formControlName="description" class="form-control"
+        [ngClass]="{ 'is-invalid': taskForm.get('description')?.touched && taskForm.get('description')?.invalid }"></textarea>
+      <div *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid"
+        class="invalid-feedback">
+        {{ descriptionError }}
+      </div>
     </div>
+
+    <!-- Botão Salvar -->
     <button type="submit" class="btn btn-success">Salvar</button>
   </form>
 </div>

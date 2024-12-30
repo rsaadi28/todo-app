@@ -12,72 +12,99 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class TaskFormComponent implements OnInit {
   taskForm!: FormGroup;
-  taskId: string | null = null;  // Para armazenar o ID da tarefa, se for edição
+  taskId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
     private router: Router,
-    private route: ActivatedRoute  // Para capturar o ID da tarefa
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    // Inicializa o formulário
     this.taskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
     });
 
-    // Captura o ID da tarefa da URL (se estiver editando uma tarefa)
     this.taskId = this.route.snapshot.paramMap.get('id');
-
     if (this.taskId) {
-      // Se for edição, carrega os dados da tarefa
-      const taskToEdit = this.taskService.getTaskById(this.taskId);
-      if (taskToEdit) {
-        this.taskForm.patchValue({
-          title: taskToEdit.title,
-          description: taskToEdit.description
-        });
-      }
+      this.loadTaskForEdit(this.taskId);
+    }
+  }
+
+  private loadTaskForEdit(taskId: string): void {
+    const taskToEdit = this.taskService.getTaskById(taskId);
+    if (taskToEdit) {
+      this.taskForm.patchValue({
+        title: taskToEdit.title,
+        description: taskToEdit.description,
+      });
+    } else {
+      console.error(`Task with ID ${taskId} not found.`);
+      this.router.navigate(['/tasks']);
     }
   }
 
   onSubmit(): void {
-    if (this.taskForm.valid) {
-      const formValue = this.taskForm.value;
-
-      if (this.taskId) {
-        // Caso seja edição, carrega a tarefa original
-        const taskToEdit = this.taskService.getTaskById(this.taskId);
-        if (taskToEdit) {
-          const updatedTask: Task = {
-            id: this.taskId,
-            title: formValue.title,
-            description: formValue.description,
-            completed: taskToEdit.completed,  // Preserva o estado de 'completed'
-            createdAt: taskToEdit.createdAt,  // Preserva a data de criação original
-            updatedAt: new Date(),  // Atualiza a data de edição
-          };
-
-          this.taskService.updateTask(updatedTask);  // Atualiza a tarefa no serviço
-        }
-      } else {
-        // Caso seja uma nova tarefa, cria uma nova tarefa
-        const newTask: Task = {
-          id: uuidv4(),
-          title: formValue.title,
-          description: formValue.description,
-          completed: false,
-          createdAt: new Date(),
-          updatedAt: null,
-        };
-
-        this.taskService.addTask(newTask);  // Adiciona a nova tarefa
-      }
-
-      // Redireciona para a lista de tarefas após salvar
-      this.router.navigate(['/tasks']);
+    if (this.taskForm.invalid) {
+      this.taskForm.markAllAsTouched();
+      return;
     }
+
+    const formValue = this.taskForm.value;
+    const currentDate = new Date();
+
+    const task: Task = this.taskId
+      ? {
+        ...this.taskService.getTaskById(this.taskId)!,
+        title: formValue.title,
+        description: formValue.description,
+        updatedAt: currentDate,
+      }
+      : {
+        id: uuidv4(),
+        title: formValue.title,
+        description: formValue.description,
+        completed: false,
+        createdAt: currentDate,
+        updatedAt: null,
+      };
+
+    if (this.taskId) {
+      this.taskService.updateTask(task);
+    } else {
+      this.taskService.addTask(task);
+    }
+
+    this.router.navigate(['/tasks']);
+  }
+
+  // Função para mensagens de erro
+  getErrorMessage(controlName: string, messages: { [key: string]: string }): string | null {
+    const control = this.taskForm.get(controlName);
+    if (control?.touched || control?.dirty) {
+      for (const error in messages) {
+        if (control?.hasError(error)) {
+          return messages[error];
+        }
+      }
+    }
+    return null;
+  }
+
+  // Métodos específicos para os campos
+  get titleError(): string | null {
+    return this.getErrorMessage('title', {
+      required: 'O campo título não pode ficar vazio.',
+      minlength: 'O título deve ter pelo menos 3 caracteres.',
+    });
+  }
+
+  get descriptionError(): string | null {
+    return this.getErrorMessage('description', {
+      required: 'O campo descrição não pode ficar vazio.',
+      minlength: 'A descrição deve ter pelo menos 10 caracteres.',
+    });
   }
 }
